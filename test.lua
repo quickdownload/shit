@@ -6,7 +6,7 @@ local functions = {
 end]]
 }
 
-function add:function(name, child)
+function add:func(name, child)
     if child==nil then
     local new = functions[name]
     loadstring(new)()
