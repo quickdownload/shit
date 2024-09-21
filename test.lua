@@ -6,9 +6,14 @@ local functions = {
 end]]
 }
 
-function add:function(name)
+function add:function(name, child)
+    if child==nil then
     local new = functions[name]
     loadstring(new)()
+else
+local new = functions[name][child]
+    loadstring(new)()
+end
 end
 
 return add
