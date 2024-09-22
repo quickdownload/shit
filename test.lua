@@ -7,7 +7,7 @@ write = [[getgenv().print = function(msg)
 }
 }
 
-function add:function(path)
+function add:func(path)
     local name, child = path:match("([^%.]+)%.([^%.]+)")
     
     if name and child then
@@ -18,5 +18,17 @@ function add:function(path)
         loadstring(new)()
     end
 end
+
+function add:keysystem(script, code)
+    local key = getgenv().key
+
+    if key == code then
+        loadstring(script)()
+    else
+        print("Invalid key.")
+    end
+end
+
+
 
 return add
