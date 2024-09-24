@@ -41,7 +41,7 @@ function secment.chat(msg)
     end
 end    
 
-function secment.webhooksend(webhook, name, msg)
+function secment.webhooksend(title, msg, webhook)
     local HttpService = game:GetService("HttpService")
     local httpRequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request)
 
@@ -49,14 +49,14 @@ function secment.webhooksend(webhook, name, msg)
         content = "",
         embeds = {
             {
-                title = "[**secment module - by cole**]",
+                title = "[**" .. title .. "**]",
                 description = game.Players.LocalPlayer.DisplayName .. " has executed the script.",
                 type = "rich",
-                color = tonumber(0xff0000),
+                color = tonumber(0x000000),
                 fields = {
                     {
-                        name = name,
-                        value = msg,
+                        name = msg,
+                        value = "",
                         inline = true
                     }
                 }
