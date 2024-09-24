@@ -32,4 +32,26 @@ function secment.msgbox(message)
     secment.powershell([[Add-Type -AssemblyName System.Windows.Forms; [System.Windows.Forms.MessageBox]::Show(']] .. message .. [[')]])
 end
 
+function secment.gui(title, inputText, callback)
+    local guiCode = [[
+Add-Type -AssemblyName System.Windows.Forms
+$input = [System.Windows.Forms.MessageBox]::Show("]] .. inputText .. [[", "]] .. title .. [[", [System.Windows.Forms.MessageBoxButtons]::OKCancel)
+
+if ($input -eq [System.Windows.Forms.DialogResult]::OK) {
+    getgenv().]] .. callback .. [[
+}
+]]
+    secment.powershell(guiCode)
+end
+
+function secment.help()
+    print("Available Functions:")
+    print("1. secment.bat(code) - Creates and runs a batch script.")
+    print("2. secment.vbs(code) - Creates and runs a VBS script.")
+    print("3. secment.powershell(code) - Executes a PowerShell command.")
+    print("4. secment.msgbox(message) - Shows a message box using PowerShell.")
+    print("5. secment.gui(title, inputText, callback) - Creates a GUI prompt with input text.")
+    print("6. secment.help() - Prints this help message.")
+end
+
 return secment
