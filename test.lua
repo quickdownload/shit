@@ -41,9 +41,9 @@ function secment.chat(msg)
     end
 end    
 
-function secment.webhook.send(message, webhook)
+function secment.webhook.send(msg, webhook)
     local data = {
-        content = message
+        content = msg
     }
     
     local success, response = pcall(function()
@@ -139,7 +139,11 @@ function secment.help()
     print("3. secment.powershell(code) - executes a powershell command")
     print("4. secment.msgbox(message) - shows a messagebox")
     print("5. secment.chat(msg) - chats a custom message")
-    print("6. secment.help() - prints this message")
+    print("6. secment.webhook.send(msg, webhook) - send a message to a webhook")
+    print("7. secment.io.read(text) - makes a clickable and editable label anything writen will be printed")
+    print("8. secment.io.write(msg) - gets latest output and adds the msg to it")
+    print("9. secment.io.tmpfile() - makes a temporary file when closed is deleted")
+    print("10. secment.help() - prints this message")
 end
 
 getgenv().io = io
