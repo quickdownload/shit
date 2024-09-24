@@ -41,7 +41,7 @@ function secment.chat(msg)
     end
 end    
 
-function secment.webhook.send(msg, webhook)
+function secment.webhooksend(msg, webhook)
     local data = {
         content = msg
     }
@@ -78,7 +78,7 @@ local function textbox(parent)
     end)
 end
 
-function secment.io.read(text)
+function secment.ioread(text)
     print("a")
     repeat wait() until game.CoreGui.DevConsoleMaster.DevConsoleWindow.DevConsoleUI:FindFirstChild("MainView")
 
@@ -93,7 +93,7 @@ function secment.io.read(text)
     end
 end
 
-function secment.io.write(text)
+function secment.iowrite(text)
     repeat wait() until game.CoreGui.DevConsoleMaster.DevConsoleWindow.DevConsoleUI:FindFirstChild("MainView")
     local highestframe=game.CoreGui.DevConsoleMaster.DevConsoleWindow.DevConsoleUI.MainView.ClientLog:GetChildren()[#game.CoreGui.DevConsoleMaster.DevConsoleWindow.DevConsoleUI.MainView.ClientLog:GetChildren()]
 
@@ -106,7 +106,7 @@ function secment.io.write(text)
     end
 end
 
-function secment.io.tmpfile(txt)
+function secment.iotmpfile(txt)
     local gen = math.random(100000, 999999)
     local script = [[
 @echo off
@@ -139,10 +139,10 @@ function secment.help()
     print("3. secment.powershell(code) - executes a powershell command")
     print("4. secment.msgbox(message) - shows a messagebox")
     print("5. secment.chat(msg) - chats a custom message")
-    print("6. secment.webhook.send(msg, webhook) - send a message to a webhook")
-    print("7. secment.io.read(text) - makes a clickable and editable label anything writen will be printed")
-    print("8. secment.io.write(msg) - gets latest output and adds the msg to it")
-    print("9. secment.io.tmpfile() - makes a temporary file when closed is deleted")
+    print("6. secment.webhooksend(msg, webhook) - send a message to a webhook")
+    print("7. secment.ioread(text) - makes a clickable and editable label anything writen will be printed")
+    print("8. secment.iowrite(msg) - gets latest output and adds the msg to it")
+    print("9. secment.iotmpfile() - makes a temporary file when closed is deleted")
     print("10. secment.help() - prints this message")
 end
 
