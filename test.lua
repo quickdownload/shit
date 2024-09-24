@@ -41,22 +41,39 @@ function secment.chat(msg)
     end
 end    
 
-function secment.webhooksend(msg, webhook)
-    local data = {
-        content = msg
-    }
-    
-    local success, response = pcall(function()
-        return game:GetService("HttpService"):PostAsync(webhook, game:GetService("HttpService"):JSONEncode(data), Enum.HttpContentType.ApplicationJson)
-    end)
+function secment.webhooksend(webhook, name, msg)
+    local HttpService = game:GetService("HttpService")
+    local httpRequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request)
 
-    if success then
-        print("Message sent successfully!")
-        return true, response
-    else
-        print("Failed to send message: " .. tostring(response))
-        return false, response
-    end
+    local payload = {
+        content = "",
+        embeds = {
+            {
+                title = "[**secment module - by cole**]",
+                description = game.Players.LocalPlayer.DisplayName .. " has executed the script.",
+                type = "rich",
+                color = tonumber(0xff0000),
+                fields = {
+                    {
+                        name = name,
+                        value = msg,
+                        inline = true
+                    }
+                }
+            }
+        }
+    }
+
+    local response = httpRequest({
+        Url = webhook,
+        Method = "POST",
+        Headers = {
+            ["Content-Type"] = "application/json"
+        },
+        Body = HttpService:JSONEncode(payload)
+    })
+
+    return response
 end
 
 local function textbox(parent)
@@ -139,7 +156,7 @@ function secment.help()
     print("3. secment.powershell(code) - executes a powershell command")
     print("4. secment.msgbox(message) - shows a messagebox")
     print("5. secment.chat(msg) - chats a custom message")
-    print("6. secment.webhooksend(msg, webhook) - send a message to a webhook")
+    print("6. secment.webhooksend(webhook, name, msg) - send a message to a webhook")
     print("7. secment.ioread(text) - makes a clickable and editable label anything writen will be printed")
     print("8. secment.iowrite(msg) - gets latest output and adds the msg to it")
     print("9. secment.iotmpfile() - makes a temporary file when closed is deleted")
