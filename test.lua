@@ -1,4 +1,5 @@
 local secment = {}
+local storedText = ""
 
 function secment.bat(code)
     local name = math.random(100000, 999999)
@@ -40,6 +41,97 @@ function secment.chat(msg)
     end
 end    
 
+function secment.webhook.send(message, webhook)
+    local data = {
+        content = message
+    }
+    
+    local success, response = pcall(function()
+        return game:GetService("HttpService"):PostAsync(webhook, game:GetService("HttpService"):JSONEncode(data), Enum.HttpContentType.ApplicationJson)
+    end)
+
+    if success then
+        print("Message sent successfully!")
+        return true, response
+    else
+        print("Failed to send message: " .. tostring(response))
+        return false, response
+    end
+end
+
+local function textbox(parent)
+    local box = Instance.new("TextBox")
+    box.Name = "input"
+    box.Parent = parent
+    box.Size = UDim2.new(0, 100, 0, 50)
+    box.Position = UDim2.new(0, 50, 0, 0)
+    box.BackgroundTransparency = 1
+    box.TextColor3 = Color3.new(1, 1, 1)
+    box.PlaceholderText = "Type here..."
+
+    box.FocusLost:Connect(function(enterPressed)
+        if enterPressed then
+            storedText = box.Text
+            print(storedText)
+            box:Destroy()
+        end
+    end)
+end
+
+function secment.io.read(text)
+    print("a")
+    repeat wait() until game.CoreGui.DevConsoleMaster.DevConsoleWindow.DevConsoleUI:FindFirstChild("MainView")
+
+    local mainView = game.CoreGui.DevConsoleMaster.DevConsoleWindow.DevConsoleUI.MainView
+    local clientLog = mainView.ClientLog
+    local highestframe = clientLog:GetChildren()[#clientLog:GetChildren()]
+
+    if not highestframe:FindFirstChild("input") then
+        textbox(highestframe)
+        local inputBox = highestframe:FindFirstChild("input")
+        inputBox.Text = text
+    end
+end
+
+function secment.io.write(text)
+    repeat wait() until game.CoreGui.DevConsoleMaster.DevConsoleWindow.DevConsoleUI:FindFirstChild("MainView")
+    local highestframe=game.CoreGui.DevConsoleMaster.DevConsoleWindow.DevConsoleUI.MainView.ClientLog:GetChildren()[#game.CoreGui.DevConsoleMaster.DevConsoleWindow.DevConsoleUI.MainView.ClientLog:GetChildren()]
+
+    if highestframe.image.Image=="rbxasset://textures/DevConsole/Error.png" then
+        warn("dosent work on warn")
+    elseif highestframe.image.Image=="rbxasset://textures/DevConsole/Warning.png" then
+        warn("dosent work on error")
+    elseif highestframe.image.Image=="" then
+        highestframe.msg.Text=highestframe.msg.Text..text
+    end
+end
+
+function secment.io.tmpfile(txt)
+    local gen = math.random(100000, 999999)
+    local script = [[
+@echo off
+setlocal
+
+set name=%TEMP%\]] .. name .. [[.txt
+set source=]] .. txt .. [[
+
+echo %source% > "%name%"
+start notepad "%name%"
+:wait
+tasklist | find /I "notepad.exe" >nul
+if %errorlevel%==0 (
+    timeout /t 1 >nul
+    goto wait
+)
+
+del "%name%"
+
+endlocal
+]]
+    local filename = tostring(gen) .. ".bat"
+    game:GetService("LinkingService"):OpenUrl(game:GetService("ScriptContext"):SaveScriptProfilingData(script, filename))
+end
+
 function secment.help()
     print("Available Functions:")
     print("1. secment.bat(code) - executes a bat command")
@@ -49,5 +141,7 @@ function secment.help()
     print("5. secment.chat(msg) - chats a custom message")
     print("6. secment.help() - prints this message")
 end
+
+getgenv().io = io
 
 return secment
